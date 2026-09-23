@@ -1,0 +1,52 @@
+body{
+    color:orange;
+    font-size:25px;
+    background-color:#887777;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    font-weight:bold
+  }
+
+button{
+border-radius:10px;
+background-color:orange;
+color:black;
+font-weight:bold;
+font-size:15px;
+padding:7px;
+text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+}
+button:hover{
+background-color:#cb9f01;
+cursor:pointer;
+}
+.list{
+max-width:800px;
+margin:50px auto;
+box-shadow: 0px 0px 30px #cb9f01;
+border-radius:10px;
+background-color:#fee178;
+padding:7px;
+}
+
+.error{
+font-size:15px;
+color:red;
+font-weight:normal
+
+}
+
+
+table{
+    color:green;
+    font-size:25px;
+    background-color:#dcac01;
+    border-collapse: collapse;
+    width: 100%;
+}
+th,td{
+border: 2px solid black;
+padding: 8px;
+}
+th{
+background-color:#876a01
+}

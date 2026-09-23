@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>user</title>
+</head>
+<body>
+    <h1>hi this is my survey for you</h1>
+    <form class="formstyle" action="/submit" method="post">
+         <label>your phone number:</label><br/>
+         <input  type="text" name="namber">
+        <button  type="submit">submit</button>
+    </form>
+<div class="error">
+{%if error%}
+{{error}}
+{%endif%}
+</div>
+</body>
+</html>
