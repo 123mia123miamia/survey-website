@@ -24,12 +24,12 @@ class SurveyResult(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(100))
-    favorite_game = db.Column(db.String(100))
+    favourite_game = db.Column(db.String(100))
     money = db.Column(db.String(100))
     roblox_games = db.Column(db.Text)
     favourite_food = db.Column(db.Text)
-    username = db.Column(db.Text)
-    age = db.Column(db.Text)
+    username = db.Column(db.String(100))
+    age = db.Column(db.String(100))
 
 
 with app.app_context():
