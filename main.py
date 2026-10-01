@@ -4,6 +4,10 @@ from flask_httpauth import HTTPBasicAuth
 import os
 app = Flask(__name__)
 DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL is None:
+    DATABASE_URL = "sqlite:///surveysit.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 users = {'admin': '12345'}
 auth = HTTPBasicAuth()
 @auth.verify_password
