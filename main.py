@@ -1,7 +1,9 @@
 from flask import Flask,render_template,request,redirect,url_for
-import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
+import os
 app = Flask(__name__)
+DATABASE_URL = os.getenv("DATABASE_URL")
 users = {'admin': '12345'}
 auth = HTTPBasicAuth()
 @auth.verify_password
@@ -10,23 +12,24 @@ def verify_password(username, password):
         return username
 
 
+db = SQLAlchemy(app)
 
-def init_db():
-    connection = sqlite3.connect('database.db')
-    cursor = connection.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS results (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    namber TEXT,
-    favourite_game TEXT,
-    money TEXT,
-    roblox_games TEXT,
-    favourite_food TEXT,
-    username TEXT,
-    age TEXT
-    )''')
 
-    connection.commit()
-    connection.close()
+class SurveyResult(db.Model):
+    __tablename__ = "survey_results"
+
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(100))
+    favorite_game = db.Column(db.String(100))
+    money = db.Column(db.String(100))
+    roblox_games = db.Column(db.Text)
+    favourite_food = db.Column(db.Text)
+    username = db.Column(db.Text)
+    age = db.Column(db.Text)
+
+
+with app.app_context():
+    db.create_all()
 
 
 @app.route('/')
@@ -62,12 +65,15 @@ def main():
         username = request.form.get('username')
         age = request.form.get('age')
 
-        connection = sqlite3.connect('database.db')
-        cursor = connection.cursor()
-        cursor.execute('''INSERT INTO results(namber,favourite_game,money,roblox_games,favourite_food,username,age)
-        VALUES(?,?,?,?,?,?,?)''',(namber,favourite_game,money,roblox_games_str,favourite_food_str,username,age))
-        connection.commit()
-        connection.close()
+        result = SurveyResult(number=namber,
+                              favourite_game=favourite_game,
+                              money=money,
+                              roblox_games=roblox_games_str,
+                              favourite_food=favourite_food_str,
+                              username=username,
+                              age=age)
+        db.session.add(result)
+        db.session.commit()
 
         return render_template('goodbye.html')
     return render_template('main.html',namber=namber)
@@ -76,14 +82,10 @@ def main():
 @app.route('/resuts')
 @auth.login_required
 def results():
-    connection = sqlite3.connect('database.db')
-    connection.row_factory = sqlite3.Row
-    cursor = connection.cursor()
-    cursor.execute('''SELECT * FROM results''')
-    data = cursor.fetchall()
-    connection.close()
+    data=SurveyResult.query.all()
+
     return render_template('resuts.html',data=data)
 
-init_db()
+
 if __name__ == '__main__':
     app.run(debug = True, port=5001)
