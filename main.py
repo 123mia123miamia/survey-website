@@ -42,7 +42,7 @@ def info():
 
 @app.route('/submit',methods=['POST'])
 def submit():
-    namber= request.form['namber'].strip()
+    namber= request.form['number'].strip()
     if not namber:
         return render_template('info.html',error='please enter a namber')
     elif len(namber)!=10:
@@ -50,7 +50,7 @@ def submit():
     for symbol in namber:
         if not symbol.isdigit():
             return render_template('info.html', error='delete the letters/symbols!!!')
-    return redirect(url_for('main',namber=namber))
+    return redirect(url_for('main',number=namber))
 
 
 
@@ -58,7 +58,7 @@ def submit():
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
-    namber = request.args.get('namber')
+    namber = request.args.get('number')
     if request.method == 'POST':
         favourite_game = request.form.get('favourite game')
         money = request.form.get('money')
@@ -80,7 +80,7 @@ def main():
         db.session.commit()
 
         return render_template('goodbye.html')
-    return render_template('main.html',namber=namber)
+    return render_template('main.html',number=namber)
 
 
 @app.route('/resuts')
